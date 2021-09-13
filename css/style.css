@@ -50,6 +50,11 @@ body {
   line-height: 1.5em;
     height: 3em;
     overflow: hidden;
+  }
+.product-descriptions {
+  line-height: 1.5em;
+  height: 6em;
+  overflow: hidden;
 }
 .product-name::after {
   content: 'hello';

@@ -22,8 +22,12 @@ const showProducts = (products) => {
       <h3 class="product-name">${product.title}</h3>
       <p>Category: ${product.category}</p>
       <h2>Price: $ ${product.price}</h2>
+      <div class="d-flex justify-content-around">
+      <p><b>Rating:</b> ${product.rating.rate}</p>
+      <p><b>Count:</b> ${product.rating.count}</p>
+      </div>
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button></div>
+      <button id="details-btn" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="getDetails(${product.id})">Details</button></div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
@@ -35,6 +39,7 @@ const addToCart = (id, price) => {
 
   updateTaxAndCharge();
   document.getElementById("total-Products").innerText = count;
+  updateTotal();
 };
 
 const getInputValue = (id) => {
@@ -48,12 +53,12 @@ const updatePrice = (id, value) => {
   const convertedOldPrice = getInputValue(id);
   const convertPrice = parseFloat(value);
   const total = convertedOldPrice + convertPrice;
-  document.getElementById(id).innerText = Math.round(total);
+  document.getElementById(id).innerText = total.toFixed(2);
 };
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = Math.round(value);
+  document.getElementById(id).innerText = value.toFixed(2);
 };
 
 // update delivery charge and total Tax
@@ -78,5 +83,39 @@ const updateTotal = () => {
   const grandTotal =
     getInputValue("price") + getInputValue("delivery-charge") +
     getInputValue("total-tax");
-  document.getElementById("total").innerText = grandTotal;
+  document.getElementById("total").innerText = grandTotal.toFixed(2);
 };
+
+// display details
+const showDetails = (product,modal) => {
+  modal.innerHTML = `
+  <div class="row">
+    <div class="col-3">
+      <image src="${product.image}" class="img-fluid" />
+    </div>
+    <div class="col-9">
+      <h4>${product.title}</h4>
+      <p class="product-descriptions">${product.description}</p>
+      <div class="d-flex justify-content-between">
+        <p>Rating: ${product.rating.rate}</p>
+        <p>Count: ${product.rating.count}</p>
+      </div>
+      <h6>Price: $${product.price}<h6>
+    </div>
+  </div>
+  `
+}
+// load sibgle product
+const loadSingleProducts = (id) => {
+  const modal = document.querySelector('.modal-body');
+  modal.innerHTML = '';
+  const url = `https://fakestoreapi.com/products/${id}`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => showDetails(data, modal))
+    .catch(err => console.log(err));
+};
+// product details
+const getDetails = (id) => {
+  loadSingleProducts(id)
+}
