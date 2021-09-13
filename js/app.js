@@ -97,10 +97,10 @@ const showDetails = (product,modal) => {
       <h4>${product.title}</h4>
       <p class="product-descriptions">${product.description}</p>
       <div class="d-flex justify-content-between">
-        <p>Rating: ${product.rating.rate}</p>
-        <p>Count: ${product.rating.count}</p>
+        <p><b>Rating:</b> ${product.rating.rate}</p>
+        <p><b>Count:</b> ${product.rating.count}</p>
       </div>
-      <h6>Price: $${product.price}<h6>
+      <h6><b>Price:</b> $${product.price}<h6>
     </div>
   </div>
   `
